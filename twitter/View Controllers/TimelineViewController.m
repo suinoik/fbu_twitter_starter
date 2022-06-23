@@ -10,29 +10,35 @@
 #import "APIManager.h"
 #import "AppDelegate.h"
 #import "LoginViewController.h"
+#import "Tweet.h"
+#import "TweetCell.h"
+#import "UIImageView+AFNetworking.h"
 
 
-@interface TimelineViewController ()
+@interface TimelineViewController () <UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (strong, nonatomic) NSMutableArray *arrayOfTweets;
 @end
 
 @implementation TimelineViewController
 
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.dataSource = self;
     
     // Get timeline
     [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
         if (tweets) {
             NSLog(@"😎😎😎 Successfully loaded home timeline");
-            for (NSDictionary *dictionary in tweets) {
-                NSString *text = dictionary[@"text"];
-                NSLog(@"%@", text);
-            }
+            self.arrayOfTweets = (NSMutableArray*)tweets;
+            NSLog(@"%@", ((Tweet*)self.arrayOfTweets[0]).text);
         } else {
             NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
         }
+        [self.tableView reloadData];
     }];
 }
 - (IBAction)didTapLogout:(id)sender {
@@ -49,6 +55,37 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.arrayOfTweets.count;
+}
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+//    return [[UITableViewCell alloc] init];
+    TweetCell *cell = [ tableView dequeueReusableCellWithIdentifier:@"TweetCell" forIndexPath:indexPath];
+    
+    Tweet *thisTweet = self.arrayOfTweets[indexPath.row];
+    cell.tweet = thisTweet;
+    
+    cell.displayName.text = thisTweet.user.name;
+    cell.tweetInfo.text = thisTweet.text;
+    cell.userName.text = thisTweet.user.screenName;
+    
+    
+    
+//    [cell.poster setImageWithURL: self.movies[@"poster_path"]];
+    NSString *URLString = thisTweet.user.profilePicture;
+    NSURL *url = [NSURL URLWithString:URLString];
+    [cell.displayPicture setImageWithURL:url];
+//
+//    NSData *urlData = [NSData dataWithContentsOfURL:url];
+    
+    
+    
+    
+
+//    cell.poster
+    return cell;
+}
 /*
 #pragma mark - Navigation
 
