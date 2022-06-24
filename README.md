@@ -51,7 +51,8 @@ Please list two areas of the assignment you'd like to **discuss further with you
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/75452326/175725580-4ee2c0ac-827b-46d5-9ba7-0c5438ad2c55.gif)
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/75452326/175749704-1264bdbe-09b7-495d-b0dc-d3afb3fa578d.gif)
+
 
 
 
