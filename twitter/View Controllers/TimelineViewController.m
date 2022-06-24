@@ -13,9 +13,10 @@
 #import "Tweet.h"
 #import "TweetCell.h"
 #import "UIImageView+AFNetworking.h"
+#import "ComposeViewController.h"
 
 
-@interface TimelineViewController () <UITableViewDataSource>
+@interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSMutableArray *arrayOfTweets;
@@ -23,6 +24,11 @@
 @end
 
 @implementation TimelineViewController
+
+- (IBAction)backToTimeline:(id)sender {
+    [self dismissViewControllerAnimated:true completion:nil];
+}
+
 
 
 
@@ -36,6 +42,7 @@
     
     // Get timeline
     [self loadTweets];
+    [self.tableView reloadData];
 }
 
 - (void)beginRefresh:(UIRefreshControl *)refreshControl {
@@ -85,7 +92,7 @@
     cell.displayName.text = thisTweet.user.name;
     cell.tweetInfo.text = thisTweet.text;
     cell.userName.text = thisTweet.user.screenName;
-    
+    cell.dateLabel.text = thisTweet.createdAtString;
     
     
 //    [cell.poster setImageWithURL: self.movies[@"poster_path"]];
@@ -102,15 +109,27 @@
 //    cell.poster
     return cell;
 }
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
+    if([[segue identifier] isEqualToString:@"composeSegue"]){
+        UINavigationController *navigationController = [segue destinationViewController];
+        ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
+        composeController.delegate = self;
+        
+    } else if ([[segue identifier] isEqualToString:@"detailSegue"]){
+        
+    }
+    
+    
+
+
+
+// Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-*/
 
 
 @end

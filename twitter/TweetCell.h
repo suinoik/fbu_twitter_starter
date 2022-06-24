@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *retweetFeature;
 @property (weak, nonatomic) IBOutlet UIButton *favouriteFeature;
 @property (weak, nonatomic) IBOutlet UILabel *tweetInfo;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+
 @property (strong, nonatomic) Tweet *tweet;
 
 @end
