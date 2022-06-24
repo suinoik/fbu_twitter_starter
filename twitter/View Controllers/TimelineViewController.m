@@ -14,6 +14,7 @@
 #import "TweetCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "ComposeViewController.h"
+#import "DetailsViewController.h"
 
 
 @interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
@@ -94,6 +95,15 @@
     cell.userName.text = thisTweet.user.screenName;
     cell.dateLabel.text = thisTweet.createdAtString;
     
+    if (thisTweet.favorited){
+        [cell.favouriteFeature setImage:[UIImage imageNamed:@"favor-icon-red"]
+ forState:UIControlStateNormal];
+    }
+    else{
+        [cell.favouriteFeature setImage:[UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
+    }
+    
+    
     
 //    [cell.poster setImageWithURL: self.movies[@"poster_path"]];
     NSString *URLString = thisTweet.user.profilePicture;
@@ -120,6 +130,10 @@
         composeController.delegate = self;
         
     } else if ([[segue identifier] isEqualToString:@"detailSegue"]){
+        DetailsViewController *tweetDetailController = [segue destinationViewController];
+
+        Tweet* tweet = self.arrayOfTweets[self.tableView.indexPathForSelectedRow.row];
+        tweetDetailController.tweet = tweet;
         
     }
     
